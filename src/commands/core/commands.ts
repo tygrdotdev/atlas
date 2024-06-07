@@ -15,6 +15,9 @@ export const command: DiscordCommand = {
 			const core = client.commands.filter(x => x.category === "Core").map((x) => `\`${x.name}\``).join(", ");
 			core.length >= 1 ? embed.addFields({ name: "Core", value: core }) : null;
 
+			const music = client.commands.filter(x => x.category === "Music").map((x) => `\`${x.name}\``).join(", ");
+			music.length >= 1 ? embed.addFields({ name: "Music", value: music }) : null;
+
 			msg.channel.send({ embeds: [embed] });
 		}
 

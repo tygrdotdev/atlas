@@ -17,7 +17,7 @@ import stringToBoolean from "../lib/string-to-bool";
 class VEGA extends Client {
 	public commands: Collection<string, DiscordCommand> = new Collection();
 	public events: Collection<string, DiscordEvent<never>> = new Collection();
-	public prefix: string = process.env.PREFIX as string;
+	public prefix: string = process.env.PREFIX as string ?? ">";
 	public kazagumo: Kazagumo = new Kazagumo({
 		defaultSearchEngine: "youtube",
 		send: (guildId, payload) => {
@@ -53,7 +53,7 @@ class VEGA extends Client {
 		// Discord Event Handler
 		const eventsPath = path.join(__dirname, "..", "events");
 
-		readdirSync(eventsPath).filter((file) => file.endsWith(".ts")).forEach(async (file) => {
+		readdirSync(eventsPath).filter((file) => file.endsWith(".ts") || file.endsWith(".js")).forEach(async (file) => {
 			const { event }: { event: DiscordEvent<never> } = await import(`${eventsPath}/${file}`);
 			this.events.set(event.name, event);
 			this.on(event.name, event.cmd.bind(null, this));
@@ -64,7 +64,7 @@ class VEGA extends Client {
 		const commandsPath = path.join(__dirname, "..", "commands");
 
 		readdirSync(commandsPath).forEach(async (dir) => {
-			const commands = readdirSync(`${commandsPath}/${dir}`).filter((file) => file.endsWith(".ts"));
+			const commands = readdirSync(`${commandsPath}/${dir}`).filter((file) => file.endsWith(".ts") || file.endsWith(".js"));
 
 			for (const file of commands) {
 				const { command }: { command: DiscordCommand } = await import(`${commandsPath}/${dir}/${file}`);
@@ -127,7 +127,9 @@ class VEGA extends Client {
 			player.destroy();
 		});
 
-		await this.login(process.env.DISCORD_TOKEN as string);
+		this.login(process.env.DISCORD_TOKEN as string).catch((er) => {
+			console.error(er);
+		})
 	}
 }
 
