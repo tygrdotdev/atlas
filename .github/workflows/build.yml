@@ -34,13 +34,7 @@ jobs:
         id: meta
         uses: docker/metadata-action@v5.5.1
         with:
-          images: |
-            name/app
-            ghcr.io/username/app
-          tags: |
-              type=ref,event=branch
-              type=ref,event=tag
-              type=ref,event=pr
+          images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
 
       - name: Build and push
         id: push
