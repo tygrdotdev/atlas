@@ -12,6 +12,7 @@ import { Kazagumo, Plugins } from "kazagumo";
 import Spotify from "kazagumo-spotify"
 import Apple from "kazagumo-apple";
 import KazagumoFilter from "kazagumo-filter";
+import stringToBoolean from "../lib/string-to-bool";
 
 class VEGA extends Client {
 	public commands: Collection<string, DiscordCommand> = new Collection();
@@ -42,10 +43,10 @@ class VEGA extends Client {
 		auth: "catfein",
 		secure: true,
 	} : {
-		name: "lava.tygr.dev",
-		url: "localhost:3332",
+		name: process.env.LAVALINK_NAME as string,
+		url: process.env.LAVALINK_HOST as string + ":" + process.env.LAVALINK_PORT as string,
 		auth: process.env.LAVALINK_PASSWORD as string,
-		secure: false
+		secure: stringToBoolean(process.env.LAVALINK_SECURE as string)
 	}]);
 
 	public async start() {

@@ -1,0 +1,30 @@
+services:
+  lavalink:
+    image: ghcr.io/lavalink-devs/lavalink:4
+    container_name: lavalink
+    restart: unless-stopped
+    expose:
+      - 2333
+    environment:
+      - _JAVA_OPTIONS=-Xmx4G
+    volumes:
+      - ./docker/lavalink/application.yml:/opt/Lavalink/application.yml
+      - ./docker/lavalink/plugins/:/opt/Lavalink/plugins/
+
+  vega:
+    build: .
+    container_name: vega
+    restart: unless-stopped
+    environment:
+      - NODE_ENV=production
+      - DISCORD_TOKEN=
+      - PREFIX=>
+      - SPOTIFY_CLIENT_ID=
+      - SPOTIFY_CLIENT_SECRET=
+      - LAVALINK_NAME=localhost
+      - LAVALINK_HOST=lavalink
+      - LAVALINK_PORT=2333
+      - LAVALINK_PASSWORD=youshallnotpass
+      - LAVALINK_SECURE=false
+    depends_on:
+      - lavalink
