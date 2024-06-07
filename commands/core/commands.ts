@@ -1,4 +1,4 @@
-import { Collection, EmbedBuilder, MessageCollector, channelLink } from "discord.js";
+import { Collection, EmbedBuilder } from "discord.js";
 import type { DiscordCommand } from "../../types/command";
 
 export const command: DiscordCommand = {

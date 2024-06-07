@@ -4,7 +4,7 @@ export const command: DiscordCommand = {
 	name: "ping",
 	description: "Ping the bot.",
 	category: "Core",
-	cmd: (client, message) => {
+	cmd: (_client, message) => {
 		message.channel.send("Pong!");
 	}
 }

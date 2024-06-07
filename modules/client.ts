@@ -36,10 +36,15 @@ class VEGA extends Client {
 			new KazagumoFilter(),
 			new Plugins.PlayerMoved(this)
 		]
-	}, new Connectors.DiscordJS(this), [{
-		name: "localhost",
-		url: "localhost:2333",
-		auth: "youshallnotpass",
+	}, new Connectors.DiscordJS(this), [process.env.NODE_ENV === "development" ? {
+		name: "lavalink4.alfari.id",
+		url: "lavalink4.alfari.id:443",
+		auth: "catfein",
+		secure: true,
+	} : {
+		name: "lava.tygr.dev",
+		url: "localhost:3332",
+		auth: process.env.LAVALINK_PASSWORD as string,
 		secure: false
 	}]);
 
