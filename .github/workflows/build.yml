@@ -32,7 +32,7 @@ jobs:
 
       - name: Extract commit SHA
         id: commit_sha
-        run: echo "::set-output name=sha::$(git rev-parse --short HEAD)"
+        run: echo "sha=$(git rev-parse --short HEAD)" >> $GITHUB_ENV
 
       - name: Build and push
         id: push
@@ -42,7 +42,7 @@ jobs:
           platforms: linux/amd64,linux/arm64
           push: true
           tags: |
-            ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ steps.commit_sha.outputs.sha }}
+            ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ env.sha }}
             ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:latest
 
       - name: Generate artifact attestation
@@ -55,6 +55,6 @@ jobs:
       - name: Verify Docker image 
         run: |
           echo "Docker image pushed with tags:"
-          echo "${{ steps.commit_sha.outputs.sha }}"
+          echo "${{ env.sha }}"
           echo "latest"
       
