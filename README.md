@@ -1,15 +1,12 @@
-# vega
+# VEGA
 
-To install dependencies:
+Yet another Discord bot.
 
+## Local Development
 ```bash
-bun install
+git clone https://github.com/tygrxqt/VEGA -b canary
+cd VEGA
+pnpm install
+# Update the values inside .env.example before running the dev command
+pnpm dev
 ```
-
-To run:
-
-```bash
-bun run index.ts
-```
-
-This project was created using `bun init` in bun v1.1.12. [Bun](https://bun.sh) is a fast all-in-one JavaScript runtime.

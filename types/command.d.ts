@@ -1,8 +1,9 @@
-import type { Client, Message } from "discord.js";
+import type { Message } from "discord.js";
+import type VEGA from "../modules/client";
 
 interface CMD {
 	(
-		client: Client,
+		client: VEGA,
 		message: Message,
 		args: string[]
 	): void
@@ -11,5 +12,6 @@ interface CMD {
 export interface DiscordCommand {
 	name: string;
 	description: string;
+	category: string;
 	cmd: CMD
 }
