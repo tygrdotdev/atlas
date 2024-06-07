@@ -1,5 +1,5 @@
 {
-    "name": "vega",
+    "name": "atlas",
     "version": "1.0.0",
     "description": "Yet another Discord bot.",
     "main": "index.js",

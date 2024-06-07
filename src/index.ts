@@ -1,9 +1,9 @@
 import { GatewayIntentBits } from "discord.js";
-import VEGA from "./modules/client";
+import Atlas from "./modules/client";
 
 import "dotenv/config"
 
-const vega = new VEGA({
+const atlas = new Atlas({
 	intents: [
 		GatewayIntentBits.Guilds,
 		GatewayIntentBits.GuildMessages,
@@ -12,4 +12,4 @@ const vega = new VEGA({
 	],
 });
 
-vega.start();
+atlas.start();

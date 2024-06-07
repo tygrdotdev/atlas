@@ -1,9 +1,9 @@
 import type { Message } from "discord.js";
-import type VEGA from "../modules/client";
+import Atlas from "../modules/client";
 
 interface CMD {
 	(
-		client: VEGA,
+		client: Atlas,
 		message: Message,
 		args: string[]
 	): void

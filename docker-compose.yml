@@ -11,9 +11,9 @@ services:
       - ./docker/lavalink/application.yml:/opt/Lavalink/application.yml
       - ./docker/lavalink/plugins/:/opt/Lavalink/plugins/
 
-  vega:
+  atlas:
     build: .
-    container_name: vega
+    container_name: atlas
     restart: unless-stopped
     environment:
       - NODE_ENV=production

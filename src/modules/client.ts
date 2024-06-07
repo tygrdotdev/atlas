@@ -14,7 +14,7 @@ import Apple from "kazagumo-apple";
 import KazagumoFilter from "kazagumo-filter";
 import stringToBoolean from "../lib/string-to-bool";
 
-class VEGA extends Client {
+class Atlas extends Client {
 	public commands: Collection<string, DiscordCommand> = new Collection();
 	public events: Collection<string, DiscordEvent<never>> = new Collection();
 	public prefix: string = process.env.PREFIX as string ?? ">";
@@ -133,4 +133,4 @@ class VEGA extends Client {
 	}
 }
 
-export default VEGA;
+export default Atlas;
