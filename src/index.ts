@@ -9,6 +9,7 @@ const atlas = new Atlas({
 		GatewayIntentBits.GuildMessages,
 		GatewayIntentBits.MessageContent,
 		GatewayIntentBits.GuildVoiceStates,
+		GatewayIntentBits.GuildMessageReactions
 	],
 });
 

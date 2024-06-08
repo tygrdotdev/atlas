@@ -48,22 +48,10 @@ class Atlas extends Client {
 		name: process.env.LAVALINK_NAME as string,
 		url: process.env.LAVALINK_HOST as string + ":" + process.env.LAVALINK_PORT as string,
 		auth: process.env.LAVALINK_PASSWORD as string,
-		secure: stringToBoolean(process.env.LAVALINK_SECURE as string)
+			secure: stringToBoolean(process.env.LAVALINK_SECURE as string ?? "false")
 	}]);
 
-	public async start() {
-		console.log("Starting Atlas...");
-
-		// Discord Event Handler
-		const eventsPath = path.join(__dirname, "..", "events");
-
-		readdirSync(eventsPath).filter((file) => file.endsWith(".ts") || file.endsWith(".js")).forEach(async (file) => {
-			const { event }: { event: DiscordEvent<never> } = await import(`${eventsPath}/${file}`);
-			this.events.set(event.name, event);
-			this.on(event.name, event.cmd.bind(null, this));
-			console.log(`Successfully loaded ${event.name} event.`)
-		});
-
+	public async loadCommands() {
 		// Commands Handler
 		const commandsPath = path.join(__dirname, "..", "commands");
 
@@ -85,6 +73,24 @@ class Atlas extends Client {
 			}
 		});
 
+		return true;
+	}
+
+	public async loadEvents() {
+		// Discord Event Handler
+		const eventsPath = path.join(__dirname, "..", "events");
+
+		readdirSync(eventsPath).filter((file) => file.endsWith(".ts") || file.endsWith(".js")).forEach(async (file) => {
+			const { event }: { event: DiscordEvent<never> } = await import(`${eventsPath}/${file}`);
+			this.events.set(event.name, event);
+			this.on(event.name, event.cmd.bind(null, this));
+			console.log(`Successfully loaded ${event.name} event.`)
+		});
+
+		return true;
+	}
+
+	public async loadMusicEvents() {
 		// Music events
 		this.kazagumo.shoukaku.on('ready', () => console.log(`Connected to LavaLink server!`));
 		this.kazagumo.shoukaku.on('error', (name, error) => console.error(`Lavalink ${name}: Error Caught,`, error));
@@ -99,7 +105,7 @@ class Atlas extends Client {
 		});
 
 		if (process.env.NODE_ENV === "development") {
-			this.kazagumo.shoukaku.on('debug', (name, info) => console.debug(`Lavalink ${name}: Debug,`, info));
+			// this.kazagumo.shoukaku.on('debug', (name, info) => console.debug(info));
 		}
 
 		// Player events
@@ -139,9 +145,35 @@ class Atlas extends Client {
 			player.destroy();
 		});
 
-		this.login(process.env.DISCORD_TOKEN as string).catch((er) => {
-			console.error(er);
+		return true;
+	}
+
+	public async start() {
+		const pkg = await import(`../../package.json`);
+		console.clear();
+
+		pkg ? console.log(`Starting Atlas v${pkg.version}\n`) : console.log(`Starting Atlas\n`);
+
+		await this.loadCommands();
+		await this.loadEvents();
+		await this.loadMusicEvents();
+
+		this.login(process.env.DISCORD_TOKEN as string).catch((err) => {
+			return console.error(err);
 		});
+	}
+
+	public async restart() {
+		console.log("\nReloading...\n")
+		// Clear all commands and events
+		this.commands.clear();
+		this.events.clear();
+
+		// Load all commands and events
+		this.loadCommands();
+		this.loadEvents();
+
+		return true;
 	}
 }
 
