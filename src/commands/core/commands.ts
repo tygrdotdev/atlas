@@ -5,6 +5,7 @@ export const command: DiscordCommand = {
 	name: "commands",
 	description: "Display all avalible commands.",
 	category: "core",
+	aliases: ["cmds"],
 	cmd: (client, msg, args) => {
 
 		function sendAllCommands() {
@@ -28,6 +29,8 @@ export const command: DiscordCommand = {
 					{ name: "Description", value: cmd.description },
 					{ name: "Category", value: cmd.category },
 				]);
+
+			command.aliases.length >= 1 ? embed.addFields({ name: "Alias(s)", value: cmd.aliases.length > 1 ? cmd.aliases.join(", ") : cmd.aliases[0] }) : null;
 
 			msg.channel.send({ embeds: [embed] });
 		}

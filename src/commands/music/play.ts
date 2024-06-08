@@ -4,6 +4,7 @@ export const command: DiscordCommand = {
 	name: "play",
 	description: "Add a song to the queue.",
 	category: "music",
+	aliases: ["p"],
 	cmd: async (client, msg, args) => {
 		const query = args.join(" ");
 

@@ -15,7 +15,7 @@ export const event: DiscordEvent<"messageCreate"> = {
 		const cmd = args.shift()?.toLowerCase();
 		if (!cmd) return;
 
-		const command: DiscordCommand | undefined = client.commands.get(cmd);
+		const command: DiscordCommand | undefined = client.commands.get(cmd) || client.aliases.get(cmd);
 
 		if (command) {
 			command.cmd(client, message, args);

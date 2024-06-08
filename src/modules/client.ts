@@ -16,6 +16,7 @@ import stringToBoolean from "../lib/string-to-bool";
 
 class Atlas extends Client {
 	public commands: Collection<string, DiscordCommand> = new Collection();
+	public aliases: Collection<string, DiscordCommand> = new Collection();
 	public events: Collection<string, DiscordEvent<never>> = new Collection();
 	public prefix: string = process.env.PREFIX as string ?? ">";
 	public kazagumo: Kazagumo = new Kazagumo({
@@ -38,6 +39,7 @@ class Atlas extends Client {
 			new Plugins.PlayerMoved(this)
 		]
 	}, new Connectors.DiscordJS(this), [process.env.NODE_ENV === "development" ? {
+		// https://lavalink.darrennathanael.com/SSL/lavalink-with-ssl/#hosted-by-weiss-owl
 		name: "lavalink4.alfari.id",
 		url: "lavalink4.alfari.id:443",
 		auth: "catfein",
@@ -50,6 +52,8 @@ class Atlas extends Client {
 	}]);
 
 	public async start() {
+		console.log("Starting Atlas...");
+
 		// Discord Event Handler
 		const eventsPath = path.join(__dirname, "..", "events");
 
@@ -69,7 +73,15 @@ class Atlas extends Client {
 			for (const file of commands) {
 				const { command }: { command: DiscordCommand } = await import(`${commandsPath}/${dir}/${file}`);
 				this.commands.set(command.name, command);
-				console.log(`Successfully loaded ${command.name} command.`)
+				if (command.aliases && command.aliases.length > 0) {
+					for (const alias of command.aliases) {
+						this.aliases.set(alias, command);
+					}
+
+					console.log(`Successfully loaded command: ${command.name} [${command.aliases.join(", ")}]`);
+				} else {
+					console.log(`Successfully loaded command: ${command.name}`)
+				}
 			}
 		});
 
@@ -129,7 +141,7 @@ class Atlas extends Client {
 
 		this.login(process.env.DISCORD_TOKEN as string).catch((er) => {
 			console.error(er);
-		})
+		});
 	}
 }
 
