@@ -8,9 +8,6 @@
         "build": "tsc",
         "start": "NODE_ENV=production node ./dist/index.js"
     },
-    "keywords": [],
-    "author": "",
-    "license": "ISC",
     "dependencies": {
         "discord.js": "^14.15.3",
         "dotenv": "^16.4.5",
