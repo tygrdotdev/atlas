@@ -23,7 +23,8 @@ export const command: DiscordCommand = {
 				confirmCollector.stop();
 				await client.restart().then((res) => {
 					if (res === true) {
-						confirm.edit(`Successfully reloaded all commands and events.`)
+						confirm.edit(`Successfully reloaded all commands and events.`);
+						return;
 					}
 				})
 

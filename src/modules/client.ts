@@ -169,6 +169,8 @@ class Atlas extends Client {
 		this.commands.clear();
 		this.events.clear();
 
+		this.removeAllListeners();
+
 		// Load all commands and events
 		this.loadCommands();
 		this.loadEvents();
