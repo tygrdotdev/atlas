@@ -5,7 +5,10 @@ export const command: DiscordCommand = {
 	description: "Ping the bot.",
 	category: "core",
 	aliases: [],
-	cmd: (_client, message) => {
-		message.channel.send("Pong!");
+	cmd: (client, msg) => {
+		const start = new Date();
+		msg.channel.send("Estimating...").then((msg) => {
+			msg.edit(`Ping! \`${new Date().getMilliseconds() - start.getMilliseconds()}ms\``)
+		})
 	}
 }
