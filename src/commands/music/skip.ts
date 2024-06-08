@@ -3,7 +3,7 @@ import { DiscordCommand } from "../../types/command";
 export const command: DiscordCommand = {
 	name: "skip",
 	description: "Skip the currently playing track.",
-	category: "Music",
+	category: "music",
 	cmd: (client, msg) => {
 		let player = client.kazagumo.getPlayer(msg.guild?.id as string);
 

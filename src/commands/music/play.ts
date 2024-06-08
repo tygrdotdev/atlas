@@ -3,7 +3,7 @@ import type { DiscordCommand } from "../../types/command";
 export const command: DiscordCommand = {
 	name: "play",
 	description: "Add a song to the queue.",
-	category: "Music",
+	category: "music",
 	cmd: async (client, msg, args) => {
 		const query = args.join(" ");
 

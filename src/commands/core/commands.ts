@@ -4,7 +4,7 @@ import type { DiscordCommand } from "../../types/command";
 export const command: DiscordCommand = {
 	name: "commands",
 	description: "Display all avalible commands.",
-	category: "Core",
+	category: "core",
 	cmd: (client, msg, args) => {
 
 		function sendAllCommands() {
@@ -12,10 +12,10 @@ export const command: DiscordCommand = {
 				.setTitle("All Commands")
 				.setFooter({ text: `Use "${client.prefix}commands [command]" to find more information aout a specific command.` });
 
-			const core = client.commands.filter(x => x.category === "Core").map((x) => `\`${x.name}\``).join(", ");
+			const core = client.commands.filter(x => x.category.toLowerCase() === "core").map((x) => `\`${x.name}\``).join(", ");
 			core.length >= 1 ? embed.addFields({ name: "Core", value: core }) : null;
 
-			const music = client.commands.filter(x => x.category === "Music").map((x) => `\`${x.name}\``).join(", ");
+			const music = client.commands.filter(x => x.category.toLowerCase() === "music").map((x) => `\`${x.name}\``).join(", ");
 			music.length >= 1 ? embed.addFields({ name: "Music", value: music }) : null;
 
 			msg.channel.send({ embeds: [embed] });
