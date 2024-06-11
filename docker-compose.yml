@@ -12,7 +12,7 @@ services:
       - ./lavalink/plugins/:/opt/Lavalink/plugins/
 
   atlas:
-    build: .
+    image: ghcr.io/tygrxqt/atlas:latest
     container_name: atlas
     restart: unless-stopped
     environment:
