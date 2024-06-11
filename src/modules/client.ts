@@ -84,7 +84,7 @@ class Atlas extends Client {
 			const { event }: { event: DiscordEvent<never> } = await import(`${eventsPath}/${file}`);
 			this.events.set(event.name, event);
 			this.on(event.name, event.cmd.bind(null, this));
-			console.log(`Successfully loaded ${event.name} event.`)
+			console.log(`Successfully loaded event: ${event.name}`)
 		});
 
 		return true;

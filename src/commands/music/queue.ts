@@ -1,5 +1,6 @@
 import { EmbedBuilder, User } from "discord.js";
 import { DiscordCommand } from "../../types/command";
+
 export const command: DiscordCommand = {
 	name: "queue",
 	description: "Get the current track queue.",
@@ -14,20 +15,28 @@ export const command: DiscordCommand = {
 		if (msg.member.voice.channelId !== player.voiceId) return msg.channel.send("You are not in the same voice channel as me!");
 
 		if (!player.queue.current) return msg.channel.send("The queue is empty.");
-		const req = player.queue.current.requester as User;
-		const embed = new EmbedBuilder()
-			.setTitle(`Now Playing: ${player.queue.current.title}`)
-			.setURL(player.queue.current.uri ?? "")
-			.setDescription(`Requested by: **${req.username}**`)
 
-		if (player.queue.length >= 1) {
-			// Loop through tracks and add them
-		} else {
-			embed.setDescription("The queue is empty.")
+		const embed = new EmbedBuilder().setTitle(`Now Playing: ${player.queue.current.title} by ${player.queue.current.author}`);
+
+		if (player.queue.current.uri) {
+			embed.setURL(player.queue.current.uri);
 		}
 
-		return msg.channel.send({ embeds: [embed] }).then((msg) => {
-			player.data.set("message", msg);
-		});
+		if (player.queue.length >= 1) {
+			embed.setDescription(
+				player.queue.map((track, i) => {
+					const req = track.requester as User;
+					return `**#${i + 1}** - ${track.title} (requested by: ${req.username})`
+				}).slice(0, 10).join("\n")
+			);
+		} else {
+			embed.setDescription(`So empty! Add songs using the \`${client.prefix}play\` command.`);
+		}
+
+		if (player.queue.length > 10) {
+			embed.setFooter({ text: `And ${player.queue.length - 10} other songs...` });
+		}
+
+		return msg.channel.send({ embeds: [embed] });
 	}
 }
