@@ -6,9 +6,10 @@ export const command: DiscordCommand = {
 	category: "music",
 	aliases: ["p"],
 	cmd: async (client, msg, args) => {
-		const query = args.join(" ");
-
 		if (!msg.member?.voice.channel) return msg.channel.send("You need to be in a voice channel to use this command.");
+
+		if (!args[0]) return msg.channel.send("Please specify a query.");
+		const query = args.join(" ");
 
 		const player = await client.kazagumo.createPlayer({
 			guildId: msg.guild?.id as string,

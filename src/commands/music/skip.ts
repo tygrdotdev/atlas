@@ -4,7 +4,7 @@ export const command: DiscordCommand = {
 	name: "skip",
 	description: "Skip the currently playing track.",
 	category: "music",
-	aliases: ["next"],
+	aliases: ["next", "s"],
 	cmd: (client, msg) => {
 		let player = client.kazagumo.getPlayer(msg.guild?.id as string);
 

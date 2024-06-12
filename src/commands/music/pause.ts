@@ -15,10 +15,16 @@ export const command: DiscordCommand = {
 
 		if (player.paused) {
 			msg.react("▶️");
-			return player.pause(false);
+			player.pause(false);
+			setTimeout(() => {
+				if (msg.deletable) msg.delete();
+			}, 5000);
 		} else {
 			msg.react("⏸️")
-			return player.pause(true);
+			player.pause(true);
+			setTimeout(() => {
+				if (msg.deletable) msg.delete();
+			}, 5000);
 		}
 	}
 }

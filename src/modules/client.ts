@@ -1,4 +1,4 @@
-import { ChannelType, Client, Collection, EmbedBuilder, Message, User } from "discord.js";
+import { ChannelType, Client, Collection, EmbedBuilder, Message } from "discord.js";
 
 import type { DiscordCommand } from "../types/command";
 import type { DiscordEvent } from "../types/event";
@@ -13,6 +13,7 @@ import Spotify from "kazagumo-spotify"
 import Apple from "kazagumo-apple";
 import KazagumoFilter from "kazagumo-filter";
 import stringToBoolean from "../lib/string-to-bool";
+import { nowPlayingEmbed, updateLiveMsg } from "./kazagumo";
 
 class Atlas extends Client {
 	public commands: Collection<string, DiscordCommand> = new Collection();
@@ -39,11 +40,11 @@ class Atlas extends Client {
 			new Plugins.PlayerMoved(this)
 		]
 	}, new Connectors.DiscordJS(this), [process.env.NODE_ENV === "development" ? {
-		// https://lavalink.darrennathanael.com/SSL/lavalink-with-ssl/#hosted-by-weiss-owl
-		name: "lavalink4.alfari.id",
-		url: "lavalink4.alfari.id:443",
-		auth: "catfein",
-		secure: true,
+		// https://lavalink.darrennathanael.com/SSL/lavalink-with-ssl/#hosted-by-ajiedev
+		name: "lava-v4.ajieblogs.eu.org",
+		url: "lava-v4.ajieblogs.eu.org:443",
+		auth: "https://dsc.gg/ajidevserver",
+		secure: true
 	} : {
 		name: process.env.LAVALINK_NAME as string,
 		url: process.env.LAVALINK_HOST as string + ":" + process.env.LAVALINK_PORT as string,
@@ -110,38 +111,44 @@ class Atlas extends Client {
 
 		// Player events
 		this.kazagumo.on("playerStart", (player, track) => {
+			console.log(`Started playing ${track.title} on VC: ${player.voiceId}`);
 			const channel = this.channels.cache.get(player.textId as string);
 			if (!channel) return;
 
 			if (channel.type === ChannelType.GuildText) {
-				const embed = new EmbedBuilder()
-					.setTitle("Now Playing: **" + track.title + "**");
-
-				if (typeof track.uri !== "undefined") embed.setURL(track.uri);
-				if (typeof track.requester !== "undefined") {
-					const req = track.requester as User;
-					embed.setDescription(`Requested by: **${req.username}**`)
-				}
+				const embed = nowPlayingEmbed(player, track);
 
 				const existingMessage: Message | undefined = player.data.get("message");
 
 				if (typeof existingMessage !== "undefined") {
-					return existingMessage.edit({ embeds: [embed] });
+					return existingMessage.edit({ embeds: [embed] }).then(async (x) => {
+						await updateLiveMsg(player, x, track);
+					})
 				} else {
-					return channel.send({ embeds: [embed] }).then(x => player.data.set("message", x));
+					return channel.send({ embeds: [embed] }).then(async x => {
+						await updateLiveMsg(player, x, track);
+					});
 				}
 			}
 		});
 
 		this.kazagumo.on("playerEmpty", player => {
+			console.log(`Queue is empty.`);
+
 			const channel = this.channels.cache.get(player.textId as string);
-			if (!channel) return player.destroy();
+			if (!channel) return;
 
 			if (channel.type === ChannelType.GuildText) {
 				const embed = new EmbedBuilder()
 					.setDescription("The queue has ended")
 				player.data.get("message")?.edit({ embeds: [embed] });
 			}
+
+			const interval: ReturnType<typeof setInterval> = player.data.get("interval");
+			if (!interval) return player.destroy();
+
+			clearInterval(interval);
+
 			player.destroy();
 		});
 
