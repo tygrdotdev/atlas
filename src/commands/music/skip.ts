@@ -14,6 +14,10 @@ export const command: DiscordCommand = {
 		if (msg.member.voice.channelId !== player.voiceId) return msg.channel.send("You are not in the same voice channel as me!");
 
 		player.skip();
-		return msg.react("✅");
+		msg.react("✅").then(() => {
+			setTimeout(() => {
+				if (msg.deletable) return msg.delete();
+			}, 3000);
+		})
 	}
 }

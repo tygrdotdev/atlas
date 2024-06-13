@@ -1,4 +1,4 @@
-import { ChannelType, Client, Collection, EmbedBuilder, Message } from "discord.js";
+import { ActivityType, ChannelType, Client, Collection, EmbedBuilder, Message, User } from "discord.js";
 
 import type { DiscordCommand } from "../types/command";
 import type { DiscordEvent } from "../types/event";
@@ -13,7 +13,7 @@ import Spotify from "kazagumo-spotify"
 import Apple from "kazagumo-apple";
 import KazagumoFilter from "kazagumo-filter";
 import stringToBoolean from "../lib/string-to-bool";
-import { nowPlayingEmbed, updateLiveMsg } from "./kazagumo";
+import { fetchFormattedQueue, fetchNowPlayingEmbed, fetchProgressBar, updateEmbed } from "./kazagumo";
 
 class Atlas extends Client {
 	public commands: Collection<string, DiscordCommand> = new Collection();
@@ -111,30 +111,67 @@ class Atlas extends Client {
 
 		// Player events
 		this.kazagumo.on("playerStart", (player, track) => {
-			console.log(`Started playing ${track.title} on VC: ${player.voiceId}`);
+			// Set Bot activity to new track
+			this.user?.setActivity({ name: track.title, type: ActivityType.Listening });
+
+			// Stop interval from last song
+			const interval = player.data.get("interval") as NodeJS.Timeout;
+
+			if (typeof interval !== "undefined") {
+				clearTimeout(interval);
+			}
+
+			// Fetch the channel the player has cached
 			const channel = this.channels.cache.get(player.textId as string);
 			if (!channel) return;
 
-			if (channel.type === ChannelType.GuildText) {
-				const embed = nowPlayingEmbed(player, track);
+			// Fetch a fresh embed
+			const embed = fetchNowPlayingEmbed(player, track);
 
-				const existingMessage: Message | undefined = player.data.get("message");
+			// Get Progress
+			const progress = fetchProgressBar(player, track);
 
-				if (typeof existingMessage !== "undefined") {
-					return existingMessage.edit({ embeds: [embed] }).then(async (x) => {
-						await updateLiveMsg(player, x, track);
-					})
-				} else {
+			// Get the next 5 songs in the queue
+			const queue = fetchFormattedQueue(player, 5);
+
+			if (typeof progress !== "undefined") {
+				embed.setDescription(progress + "\n\n");
+			}
+
+			if (queue.length >= 1) {
+				embed.setDescription(embed.data.description + "Up next:\n" + queue)
+			}
+
+			// Fetch existing message
+			const existingMessage: Message | undefined = player.data.get("message");
+
+			// Check if the message exists
+			if (typeof existingMessage !== "undefined") {
+				// If so, edit the message
+				return existingMessage.edit({ embeds: [embed] }).then(async (x) => {
+					const interval = setInterval(() => {
+						updateEmbed(player, track, existingMessage, embed);
+					}, 3000);
+
+					player.data.set("interval", interval);
+					player.data.set("message", x);
+				});
+			} else {
+				if (channel.type === ChannelType.GuildText) {
+				// If not, create a new message
 					return channel.send({ embeds: [embed] }).then(async x => {
-						await updateLiveMsg(player, x, track);
+						const interval = setInterval(() => {
+							updateEmbed(player, track, x, embed);
+						}, 3000);
+
+						player.data.set("interval", interval);
+						player.data.set("message", x);
 					});
 				}
 			}
 		});
 
 		this.kazagumo.on("playerEmpty", player => {
-			console.log(`Queue is empty.`);
-
 			const channel = this.channels.cache.get(player.textId as string);
 			if (!channel) return;
 

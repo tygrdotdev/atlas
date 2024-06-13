@@ -1,11 +1,11 @@
 import { DiscordCommand } from "../../types/command";
 
 export const command: DiscordCommand = {
-	name: "pause",
-	description: "Toggle the player's paused state.",
+	name: "shuffle",
+	description: "Suffle the queue around!",
 	category: "music",
 	aliases: [],
-	cmd: (client, msg) => {
+	cmd: async (client, msg, args) => {
 		let player = client.kazagumo.getPlayer(msg.guild?.id as string);
 
 		if (!player) return msg.channel.send("There is nothing playing.")
@@ -13,18 +13,12 @@ export const command: DiscordCommand = {
 		if (!msg.member?.voice.channelId) return msg.channel.send("You are not in a voice channel.")
 		if (msg.member.voice.channelId !== player.voiceId) return msg.channel.send("You are not in the same voice channel as me!");
 
-		if (player.paused) {
-			msg.react("▶️");
-			player.pause(false);
+		player.queue.shuffle();
+
+		await msg.react("🔀").then(() => {
 			setTimeout(() => {
-				if (msg.deletable) msg.delete();
+				if (msg.deletable) return msg.delete();
 			}, 3000);
-		} else {
-			msg.react("⏸️")
-			player.pause(true);
-			setTimeout(() => {
-				if (msg.deletable) msg.delete();
-			}, 3000);
-		}
+		});
 	}
 }
