@@ -1,5 +1,5 @@
-import type { DiscordCommand } from "../types/command";
-import type { DiscordEvent } from "../types/event";
+import type { DiscordCommand } from "../../types/command";
+import type { DiscordEvent } from "../../types/event";
 
 export const event: DiscordEvent<"messageCreate"> = {
 	name: "messageCreate",
