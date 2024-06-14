@@ -2,7 +2,7 @@ import { ShoukakuEvent } from "../../types/shoukaku";
 
 export const event: ShoukakuEvent<"ready"> = {
 	name: "ready",
-	cmd: () => {
-		console.log(`Connected to LavaLink server!`)
+	cmd: (c) => {
+		c.log.shoukaku.info(`Connected to LavaLink server!`)
 	}
 }

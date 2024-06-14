@@ -15,12 +15,25 @@ import KazagumoFilter from "kazagumo-filter";
 import stringToBoolean from "../lib/string-to-bool";
 import { ShoukakuEvent } from "../types/shoukaku";
 import { KazagumoEvent } from "../types/kazagumo";
+import { Log } from "./log";
 
 class Atlas extends Client {
 	public commands: Collection<string, DiscordCommand> = new Collection();
 	public aliases: Collection<string, DiscordCommand> = new Collection();
 	public events: Collection<string, DiscordEvent<never>> = new Collection();
 	public prefix: string = process.env.PREFIX as string ?? ">";
+	public log: {
+		bot: Log,
+		shoukaku: Log,
+		kazagumo: Log,
+		command: Log
+	} = {
+			bot: new Log("BOT"),
+			shoukaku: new Log("SHOUKAKU"),
+			kazagumo: new Log("KAZAGUMO"),
+			command: new Log("COMMAND")
+		}
+
 	public kazagumo: Kazagumo = new Kazagumo({
 		defaultSearchEngine: "youtube",
 		send: (guildId, payload) => {
@@ -68,9 +81,9 @@ class Atlas extends Client {
 						this.aliases.set(alias, command);
 					}
 
-					console.log(`[DISCORD] Loaded command: ${command.name} [${command.aliases.join(", ")}]`);
+					this.log.bot.info(`Loaded command: ${command.name} [${command.aliases.join(", ")}]`);
 				} else {
-					console.log(`[DISCORD] Loaded command: ${command.name}`)
+					this.log.bot.info(`Loaded command: ${command.name}`)
 				}
 			}
 		});
@@ -86,7 +99,7 @@ class Atlas extends Client {
 			const { event }: { event: DiscordEvent<never> } = await import(`${eventsPath}/${file}`);
 			this.events.set(event.name, event);
 			this.on(event.name, event.cmd.bind(null, this));
-			console.log(`[DISCORD] Loaded event: ${event.name}`)
+			this.log.bot.info(`Loaded event: ${event.name}`)
 		});
 
 		return true;
@@ -99,7 +112,7 @@ class Atlas extends Client {
 		readdirSync(eventsPath).filter((file) => file.endsWith(".ts") || file.endsWith(".js")).forEach(async (file) => {
 			const { event }: { event: ShoukakuEvent<any> } = await import(`${eventsPath}/${file}`);
 			this.kazagumo.shoukaku.on(event.name, event.cmd.bind(null, this));
-			console.log(`[SHOUKAKU] Loaded event: ${event.name}`)
+			this.log.shoukaku.info(`Loaded event: ${event.name}`)
 		});
 
 		return true;
@@ -113,7 +126,7 @@ class Atlas extends Client {
 		readdirSync(eventsPath).filter((file) => file.endsWith(".ts") || file.endsWith(".js")).forEach(async (file) => {
 			const { event }: { event: KazagumoEvent<any> } = await import(`${eventsPath}/${file}`);
 			this.kazagumo.on(event.name, event.cmd.bind(null, this));
-			console.log(`[KAZAGUMO] Loaded event: ${event.name}`)
+			this.log.kazagumo.info(`Loaded event: ${event.name}`)
 		});
 
 		return true;
@@ -123,7 +136,7 @@ class Atlas extends Client {
 		const pkg = await import(`../../package.json`);
 		console.clear();
 
-		pkg ? console.log(`Starting Atlas v${pkg.version}\n`) : console.log(`Starting Atlas\n`);
+		pkg ? this.log.bot.info(`Starting Atlas v${pkg.version}\n`) : this.log.bot.info(`Starting Atlas\n`);
 
 		// Music
 		await this.loadShoukakuEvents();
@@ -140,7 +153,7 @@ class Atlas extends Client {
 	}
 
 	public async restart() {
-		console.log("\nReloading...\n")
+		this.log.bot.warn("Reloading commands and events. The bot might crash!", false);
 		// Clear all commands and events
 		this.commands.clear();
 		this.events.clear();
