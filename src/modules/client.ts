@@ -97,8 +97,8 @@ class Atlas extends Client {
 		const eventsPath = path.join(__dirname, "..", "events", "shoukaku");
 
 		readdirSync(eventsPath).filter((file) => file.endsWith(".ts") || file.endsWith(".js")).forEach(async (file) => {
-			const { event }: { event: ShoukakuEvent<never> } = await import(`${eventsPath}/${file}`);
-			this.on(event.name, event.cmd.bind(null, this));
+			const { event }: { event: ShoukakuEvent<any> } = await import(`${eventsPath}/${file}`);
+			this.kazagumo.shoukaku.on(event.name, event.cmd.bind(null, this));
 			console.log(`[SHOUKAKU] Loaded event: ${event.name}`)
 		});
 
@@ -111,8 +111,8 @@ class Atlas extends Client {
 		const eventsPath = path.join(__dirname, "..", "events", "kazagumo");
 
 		readdirSync(eventsPath).filter((file) => file.endsWith(".ts") || file.endsWith(".js")).forEach(async (file) => {
-			const { event }: { event: KazagumoEvent<never> } = await import(`${eventsPath}/${file}`);
-			this.on(event.name, event.cmd.bind(null, this));
+			const { event }: { event: KazagumoEvent<any> } = await import(`${eventsPath}/${file}`);
+			this.kazagumo.on(event.name, event.cmd.bind(null, this));
 			console.log(`[KAZAGUMO] Loaded event: ${event.name}`)
 		});
 
