@@ -40,7 +40,7 @@ export const command: DiscordCommand = {
 
 			const selection = parseInt(reply.content) - 1;
 
-			if (selection < 1 || selection > 10) {
+			if (parseInt(reply.content) < 1 || selection > 10) {
 				msg.channel.send("An invalid selection was made. Please try again.");
 				return collector.stop();
 			}
