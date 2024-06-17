@@ -13,6 +13,8 @@ export const event: KazagumoEvent<"playerEmpty"> = {
 			player.data.get("message")?.edit({ embeds: [embed] });
 		}
 
+		client.user?.setActivity();
+
 		const interval: ReturnType<typeof setInterval> = player.data.get("interval");
 		if (!interval) {
 			player.destroy()
