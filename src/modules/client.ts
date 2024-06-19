@@ -152,17 +152,22 @@ class Atlas extends Client {
 		});
 	}
 
-	public async restart() {
-		this.log.bot.warn("Reloading commands and events. The bot might crash!", false);
-		// Clear all commands and events
-		this.commands.clear();
-		this.events.clear();
+	public async restart(modules: string[] = ["commands", "events"]) {
+		this.log.bot.warn(`Reloading ${modules.length >= 1 ? modules.join(", ") : "commands and events"}. The bot might crash!`, false);
 
-		this.removeAllListeners();
 
-		// Load all commands and events
-		this.loadCommands();
-		this.loadEvents();
+		for (const module of modules) {
+			if (module === "commands") {
+				this.commands.clear();
+				await this.loadCommands()
+			};
+
+			if (module === "events") {
+				this.removeAllListeners();
+				this.events.clear();
+				await this.loadEvents();
+			};
+		};
 
 		return true;
 	}
