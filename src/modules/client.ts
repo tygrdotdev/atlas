@@ -148,7 +148,7 @@ class Atlas extends Client {
 
 		// Start Bot
 		this.login(process.env.DISCORD_TOKEN as string).catch((err) => {
-			return console.error(err);
+			return this.log.bot.error(err);
 		});
 	}
 

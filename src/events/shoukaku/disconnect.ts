@@ -7,7 +7,9 @@ export const event: ShoukakuEvent<"disconnect"> = {
 		players.map(player => {
 			client.kazagumo.destroyPlayer(player.guildId);
 			player.destroy();
+
+			client.log.shoukaku.trace(`Destroyed player: ${player.guildId}`)
 		});
-		console.warn(`Lavalink ${name}: Disconnected`);
+		client.log.shoukaku.info(`Disconnected from ${name}`);
 	}
 }
