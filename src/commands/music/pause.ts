@@ -4,7 +4,7 @@ export const command: DiscordCommand = {
 	name: "pause",
 	description: "Toggle the player's paused state.",
 	category: "music",
-	aliases: [],
+	aliases: ["pa"],
 	cmd: (client, msg) => {
 		let player = client.kazagumo.getPlayer(msg.guild?.id as string);
 
