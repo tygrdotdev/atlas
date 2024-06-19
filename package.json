@@ -16,6 +16,7 @@
         "kazagumo-apple": "^2.0.2",
         "kazagumo-filter": "^2.0.0",
         "kazagumo-spotify": "^2.1.0",
+        "puppeteer": "^22.11.1",
         "quick.db": "^9.1.7",
         "shoukaku": "^4.0.1"
     },
