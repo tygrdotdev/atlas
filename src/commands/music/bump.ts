@@ -6,6 +6,7 @@ export const command: DiscordCommand = {
 	description: "Bumps the currently playing track down the queue, in favour for a new track.",
 	category: "music",
 	aliases: ["push"],
+	usage: "(query | link)",
 	cmd: async (client, msg, args) => {
 		if (!msg.member?.voice.channel) return msg.channel.send("You need to be in a voice channel to use this command.");
 

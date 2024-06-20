@@ -3,10 +3,11 @@ import { fetchFormattedQueue, fetchNowPlayingEmbed, fetchProgressBar, updateEmbe
 import { ActivityType, ChannelType, Message, User } from "discord.js";
 
 export const command: DiscordCommand = {
-	name: "now-playing",
+	name: "nowplaying",
 	description: "Returns the current track information.",
 	category: "music",
 	aliases: ["np"],
+	usage: "",
 	cmd: async (client, msg) => {
 		let player = client.kazagumo.getPlayer(msg.guild?.id as string);
 

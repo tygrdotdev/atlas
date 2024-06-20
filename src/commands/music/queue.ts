@@ -6,6 +6,7 @@ export const command: DiscordCommand = {
 	description: "Get the current track queue.",
 	category: "music",
 	aliases: ["q"],
+	usage: "",
 	cmd: (client, msg) => {
 		let player = client.kazagumo.getPlayer(msg.guild?.id as string);
 

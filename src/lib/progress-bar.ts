@@ -1,4 +1,4 @@
-const progressBar = (total: number, current: number, size = 14, line = '▬', slider = '🔘') => {
+const progressBar = (total: number, current: number, size = 15, line = '▬', slider = '🔘') => {
 	if (!total) throw new Error('Total value is either not provided or invalid');
 	if (!current && current !== 0) throw new Error('Current value is either not provided or invalid');
 	if (isNaN(total)) throw new Error('Total value is not an integer');

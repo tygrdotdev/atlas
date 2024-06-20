@@ -14,5 +14,6 @@ export interface DiscordCommand {
 	description: string;
 	category: string;
 	aliases: string[];
+	usage: string;
 	cmd: CMD
 }

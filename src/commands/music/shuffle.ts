@@ -5,6 +5,7 @@ export const command: DiscordCommand = {
 	description: "Suffle the queue around!",
 	category: "music",
 	aliases: [],
+	usage: "",
 	cmd: async (client, msg, args) => {
 		let player = client.kazagumo.getPlayer(msg.guild?.id as string);
 

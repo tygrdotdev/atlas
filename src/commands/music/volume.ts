@@ -5,6 +5,7 @@ export const command: DiscordCommand = {
 	description: "Set the music volume.",
 	category: "music",
 	aliases: ["vol"],
+	usage: "(percent)",
 	cmd: async (client, msg, args) => {
 		if (!args[0]) return msg.channel.send(`Please provide a new volume to set. For example: \`${client.prefix}volume 35\``);
 

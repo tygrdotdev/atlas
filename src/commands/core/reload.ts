@@ -5,6 +5,7 @@ export const command: DiscordCommand = {
 	description: "Reload bot commands and events. Can specify specific modules: commands, events.",
 	aliases: ["rl"],
 	category: "core",
+	usage: "['commands' | 'events']",
 	cmd: async (client, msg, args) => {
 		if (typeof process.env.OWNER_ID === "undefined") return msg.channel.send("Please setup a bot owner before using this command. [Need some help?](https://github.com/tygrxqt/atlas/wiki/Setting-up-a-Bot-Owner)")
 

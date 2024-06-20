@@ -5,6 +5,7 @@ export const command: DiscordCommand = {
 	description: "Displays a users info.",
 	category: "core",
 	aliases: ["whoami"],
+	usage: "[id]",
 	cmd: (client, msg, args) => {
 
 	}

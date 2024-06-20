@@ -5,6 +5,7 @@ export const command: DiscordCommand = {
 	description: "Ping the bot.",
 	category: "core",
 	aliases: [],
+	usage: "",
 	cmd: (client, msg) => {
 		msg.channel.send("Estimating...").then(message => {
 			message.edit(`Ping! \`${message.createdTimestamp - msg.createdTimestamp}ms\``)

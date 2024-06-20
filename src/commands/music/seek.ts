@@ -6,6 +6,7 @@ export const command: DiscordCommand = {
 	description: "Seek through the currently playing track.",
 	category: "music",
 	aliases: [],
+	usage: "(seconds)",
 	cmd: async (client, msg, args) => {
 		let player = client.kazagumo.getPlayer(msg.guild?.id as string);
 

@@ -5,6 +5,7 @@ export const command: DiscordCommand = {
 	description: "Create a new empty player.",
 	aliases: ["summon"],
 	category: "music",
+	usage: "",
 	cmd: async (client, msg) => {
 		let oldPlayer = client.kazagumo.getPlayer(msg.guild?.id as string);
 

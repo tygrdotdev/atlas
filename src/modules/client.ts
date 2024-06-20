@@ -12,7 +12,7 @@ import { Kazagumo, Plugins } from "kazagumo";
 import Spotify from "kazagumo-spotify"
 import Apple from "kazagumo-apple";
 import KazagumoFilter from "kazagumo-filter";
-import stringToBoolean from "../lib/string-to-bool";
+import { stringToBoolean } from "../lib/utils";
 import { ShoukakuEvent } from "../types/shoukaku";
 import { KazagumoEvent } from "../types/kazagumo";
 import { Log } from "./log";

@@ -6,6 +6,7 @@ export const command: DiscordCommand = {
 	description: "Returns a screenshot from a given URL.",
 	category: "utility",
 	aliases: ["ss"],
+	usage: "(url)",
 	cmd: async (client, msg, args) => {
 		if (!args[0]) return msg.channel.send("Please provide a URL to screenshot.");
 
