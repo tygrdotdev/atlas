@@ -9,6 +9,11 @@ Many public Discord music bots commonly sourced their content from YouTube, whic
 
 The lack of public music bots and my desire to listen to music with friends on Discord led me to create Atlas, an open-source, self-hostable alternative.
 
+## Self Hosting
+To use Atlas, you will need to host your own instance.  
+
+I wrote a guide on how to achieve this, which is available on [my website](https://tygr.dev/blog/hosting-atlas) or on the [repo wiki](https://github.com/tygrxqt/atlas/wiki/Hosting-with-Docker-Compose).
+
 ## Tech Stack
 
 - API: [DiscordJS](https://discord.js.org/)
