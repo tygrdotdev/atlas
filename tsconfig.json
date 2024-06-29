@@ -6,7 +6,8 @@
         "module": "CommonJS",
         "target": "ESNext",
         "esModuleInterop": true,
-        "resolveJsonModule": true
+        "resolveJsonModule": true,
+        "skipLibCheck": true
     },
     "include": ["src/**/*", "./package.json"],
     "exclude": ["node_modules"]
