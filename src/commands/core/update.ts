@@ -28,6 +28,6 @@ export const command: DiscordCommand = {
 			await loadingMsg.edit(`Failed to trigger update: \`${err.message}\``);
 		});
 
-		loadingMsg.edit(`Successfully triggered an update. ${client.user?.tag} will temporarily go offline during the update process.`);
+		loadingMsg.edit(`Successfully triggered an update. If there is an update available, ${client.user?.tag} will temporarily go offline during the update process.`);
 	}
 }
