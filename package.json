@@ -1,7 +1,7 @@
 {
     "name": "atlas",
     "version": "1.0.0",
-    "description": "Yet another Discord bot.",
+    "description": "A self-hostable music Discord bot.",
     "main": "index.js",
     "scripts": {
         "dev": "tsnd --respawn --transpile-only --poll ./src/index.ts",
@@ -9,22 +9,22 @@
         "start": "NODE_ENV=production node ./dist/index.js"
     },
     "dependencies": {
-        "chalk": "^4.1.2",
+        "chalk": "4.1.2",
         "discord.js": "^14.15.3",
         "dotenv": "^16.4.5",
         "kazagumo": "^3.0.5",
         "kazagumo-apple": "^2.0.2",
         "kazagumo-filter": "^2.0.0",
         "kazagumo-spotify": "^2.1.0",
-        "puppeteer": "^22.11.1",
+        "puppeteer": "^22.12.1",
         "quick.db": "^9.1.7",
         "shoukaku": "^4.0.1"
     },
     "devDependencies": {
-        "@types/node": "^20.14.2",
+        "@types/node": "^20.14.9",
         "ts-node": "^10.9.2",
         "ts-node-dev": "^2.0.0",
-        "typescript": "^5.4.5"
+        "typescript": "^5.5.2"
     },
     "engines": {
         "node": ">=20.6.0"
