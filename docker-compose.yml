@@ -1,4 +1,16 @@
 services:
+  watchtower:
+    container_name: watchtower
+    image: containrrr/watchtower
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    environment:
+      - WATCHTOWER_HTTP_API_TOKEN=atlas
+    command: --http-api-update --cleanup --http-api-periodic-polls
+    expose:
+      - 8080
+    privileged: true
+
   lavalink:
     image: ghcr.io/lavalink-devs/lavalink:4
     container_name: lavalink
@@ -28,3 +40,4 @@ services:
       - LAVALINK_SECURE=false
     depends_on:
       - lavalink
+      - watchtower
