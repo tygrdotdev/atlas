@@ -13,6 +13,8 @@ export const command: DiscordCommand = {
 
 		if (!owner) return msg.channel.send("I can't find the owner. Please check my permissions and try again.");
 
+		if (msg.author.id !== owner.id) return msg.channel.send(`You aren't the owner of ${client.user?.tag}.`);
+
 		if (process.env.NODE_ENV !== "production") {
 			return msg.channel.send("You can only run this command in production.");
 		}
