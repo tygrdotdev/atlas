@@ -17,6 +17,8 @@ services:
     restart: unless-stopped
     expose:
       - 2333
+    ports:
+      - 2333:2333
     environment:
       - _JAVA_OPTIONS=-Xmx4G
     volumes:
