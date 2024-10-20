@@ -10,21 +10,21 @@
     },
     "dependencies": {
         "chalk": "4.1.2",
-        "discord.js": "^14.15.3",
+        "discord.js": "^14.16.3",
         "dotenv": "^16.4.5",
-        "kazagumo": "^3.0.5",
+        "kazagumo": "^3.2.1",
         "kazagumo-apple": "^2.0.2",
         "kazagumo-filter": "^2.0.0",
         "kazagumo-spotify": "^2.1.0",
-        "puppeteer": "^22.12.1",
+        "puppeteer": "^23.6.0",
         "quick.db": "^9.1.7",
-        "shoukaku": "^4.0.1"
+        "shoukaku": "^4.1.1"
     },
     "devDependencies": {
-        "@types/node": "^20.14.9",
+        "@types/node": "^22.7.7",
         "ts-node": "^10.9.2",
         "ts-node-dev": "^2.0.0",
-        "typescript": "^5.5.2"
+        "typescript": "^5.6.3"
     },
     "engines": {
         "node": ">=20.6.0"

@@ -4,7 +4,7 @@ import Atlas from "../modules/client";
 interface CMD {
 	(
 		client: Atlas,
-		message: Message,
+		message: Message<true>,
 		args: string[]
 	): void
 }

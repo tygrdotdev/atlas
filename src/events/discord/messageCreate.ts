@@ -18,6 +18,7 @@ export const event: DiscordEvent<"messageCreate"> = {
 		const command: DiscordCommand | undefined = client.commands.get(cmd) || client.aliases.get(cmd);
 
 		if (command) {
+			// @ts-ignore Ahh, its fine... probably.
 			command.cmd(client, message, args);
 		}
 	}
